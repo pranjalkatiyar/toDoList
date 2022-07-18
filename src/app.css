@@ -1,0 +1,19 @@
+body{
+    background-color:  #171717;;
+    margin: 1rem 6rem;
+    color: white;
+}
+
+.App{
+    font-family: 'Roboto', sans-serif;
+   /* color: white; */
+}
+
+.Heading{
+    text-align: center;
+    font-size: 2rem; 
+}
+
+.addTaskHeadline{
+    margin:3rem 0;
+}
