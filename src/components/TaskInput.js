@@ -12,9 +12,6 @@ import Typography from "@mui/material/Typography";
 import { Divider } from "@mui/material";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import axios from "axios";
-import "./taskInput.css";
-
-
 
 // Function to create a new task
 
@@ -26,10 +23,7 @@ function TaskInput() {
   // useState to store the all task
   const [inputOldTask, setOldTask] = useState([]);
 
-  // useState to the Filter task
-  const [filterTask, setFilterTask] = useState("");
-
-
+ 
   // Function to add Items
 // e=> event
   function addItem(e) {
@@ -40,7 +34,7 @@ function TaskInput() {
       title: inputnewTask,
       completed: false,
     };
-    setOldTask((item)=>[...inputOldTask,item]);
+    setOldTask([...inputOldTask,item]);
     setnewTask("");
     console.log(inputOldTask);
   }
@@ -120,10 +114,7 @@ function TaskInput() {
       {/* TaskCards or TaskList */}
 
       <Box>
-      <Typography style={{ margin: "1rem 0" }}>
-          <h3>New Task Is Added In last</h3>
-        </Typography>
-
+   
       {/* TaskList Heading */}
         <Typography style={{ margin: "4rem 0" }}>
           <h3>Added task in to-do list</h3>
@@ -139,11 +130,7 @@ function TaskInput() {
 
             {/* Mapping the all Task present in api or added item */}
               {inputOldTask.
-              filter(item=>
-              {if(item.id<50)
-              return item;
-              }).reverse().
-              map((task) => (
+               map((task) => (
                 <li
                   style={{ position: "relative", margin: "0 2rem" }}
                   key={task.id}
@@ -254,7 +241,8 @@ function TaskInput() {
                     </Grid>
                   </Grid>
                 </li>
-              ))}
+              )).reverse()
+}
             </Grid>
           </Box>
         </ol>
