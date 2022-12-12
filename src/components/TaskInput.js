@@ -9,12 +9,43 @@ import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
-import { Divider } from "@mui/material";
+import { Divider,createTheme,ThemeProvider } from "@mui/material";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import axios from "axios";
 import "./taskInput.css";
+import usePagination from "./Pagination";
+import Pagination from "@mui/material/Pagination";
 
+const theme = createTheme({
+  palette: {
+    secondary: {
+      main: "#FFFFFF",
+      contrastText: "#EEE",
+    },
+  },
 
+  components: {
+    MuiPagination: {
+      styleOverrides: {
+        root: {
+          "& .MuiPaginationItem-root": {
+            display: "inline-block",
+            justifyContent: "center",
+            fontSize: "1.25rem",
+            fontWeight: "bold",
+          },
+        },
+        ul: {
+          "& .MuiPaginationItem-root": {
+            color: "white",
+            display: "flex",
+            justifyContent: "center",
+          },
+         },
+      },
+    },
+  },
+});
 
 // Function to create a new task
 
@@ -25,6 +56,11 @@ function TaskInput() {
 
   // useState to store the all task
   const [inputOldTask, setOldTask] = useState([]);
+
+    // pagination state
+    const [page, setPage] = useState(1);
+    const taskPerPage = 10;
+
 
   // Function to add Items
 // e=> event
@@ -71,6 +107,15 @@ function TaskInput() {
       setOldTask(res.data);
     });
   }, []);
+
+    // function to handle pagination
+    const count = Math.ceil(inputOldTask.length / taskPerPage);
+    const _data = usePagination(inputOldTask, taskPerPage);
+    console.log("data", _data);
+    const handlePagination = (e, p) => {
+      setPage(p);
+      _data.jump(p);
+    };
 
   return (
     <>
@@ -133,7 +178,7 @@ function TaskInput() {
 
             {/* Mapping the all Task present in api or added item */}
               {
-                inputOldTask
+                _data.currentData()
               .map((task) => (
                 <li
                   style={{ position: "relative", margin: "0 2rem" }}
@@ -251,6 +296,19 @@ function TaskInput() {
               }
             </Grid>
           </Box>
+          <Box display="flex" justifyContent="center" alignItems="center">
+            <ThemeProvider theme={theme}>
+              <Pagination
+                count={count}
+                variant="outlined"
+                page={page}
+                onChange={handlePagination}
+                color="secondary"
+                size="large"
+              />
+            </ThemeProvider>
+          </Box>
+
         </ol>
       </Box>
     </>
